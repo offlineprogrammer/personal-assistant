@@ -1,5 +1,5 @@
 "use client";
-import { Authenticator, Button } from "@aws-amplify/ui-react";
+import { Authenticator, Button, Icon } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
 import outputs from "../../amplify_outputs.json";
@@ -12,13 +12,26 @@ export default function Home() {
     <Authenticator>
       {({ signOut, user }) => (
         <div className="app-container">
-          <header className="App-header">
-            <h1>Hello {user?.signInDetails?.loginId}</h1>
-            <Button onClick={signOut}>Sign out</Button>
+          <header className="top-bar">
+            <div className="left-section">
+              <Button onClick={signOut} variation="link">
+              
+                Sign out
+              </Button>
+            </div>
+            <div className="center-section">
+              <h1>Trip Planner Assistant</h1>
+            </div>
+            <div className="right-section">
+              
+              <span>{user?.signInDetails?.loginId}</span>
+            </div>
           </header>
-          <Chat />
+          <main>
+            <Chat />
+          </main>
         </div>
       )}
     </Authenticator>
-  ) ;
+  );
 }

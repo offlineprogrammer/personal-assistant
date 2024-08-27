@@ -19,7 +19,7 @@ export const chatbotFunction = defineFunction({
 const schema = a.schema({
   chat: a
     .query()
-    .arguments({ prompt: a.string().required() })
+    .arguments({ conversation: a.json().required(), systemPrompt: a.string().required() })
     .returns(a.string())
     .authorization((allow) => [allow.authenticated()])
     .handler(a.handler.function(chatbotFunction)),

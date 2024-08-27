@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { generateClient } from "aws-amplify/api";
 import { Schema } from "../../amplify/data/resource";
 import { Button, TextField, Loader, Placeholder } from "@aws-amplify/ui-react";
@@ -11,8 +11,8 @@ type Message = {
 
 type Conversation = Message[];
 
+const CLIENT = generateClient<Schema>();
 // Constants
-const CLIENT = generateClient<Schema>({ authMode: "userPool" });
 
 const SYSTEM_PROMPT = `
   To create a personalized travel planning experience, greet users warmly and inquire about their travel preferences 
@@ -40,23 +40,28 @@ const Chat: React.FC = () => {
 
   const handleSendMessage = () => {
     if (inputValue.trim()) {
-      setNewUserMessage();
+      const message = setNewUserMessage();
+      fetchChatResponse(message);
     }
   };
 
-  const fetchChatResponse = async () => {
-    setInputValue('');
+  const fetchChatResponse = async (message: Message) => {
+    setInputValue("");
     setIsLoading(true);
 
     try {
+      console.log("conversation", conversation);
       const { data, errors } = await CLIENT.queries.chat({
-        conversation: JSON.stringify(conversation),
-        systemPrompt: SYSTEM_PROMPT
+        conversation: JSON.stringify([...conversation, message]),
+        systemPrompt: SYSTEM_PROMPT,
       });
 
       if (!errors && data) {
         console.log("Chat response:", JSON.parse(data));
-        setConversation(prevConversation => [...prevConversation, JSON.parse(data)]);
+        setConversation((prevConversation) => [
+          ...prevConversation,
+          JSON.parse(data),
+        ]);
       } else {
         throw new Error(errors?.[0].message || "An unknown error occurred.");
       }
@@ -70,17 +75,30 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     const lastMessage = conversation[conversation.length - 1];
-    if (conversation.length > 0 && lastMessage.role === "user") {
-      fetchChatResponse();
-    }
-    (messagesRef.current as HTMLDivElement | null)?.lastElementChild?.scrollIntoView();
+    console.log("lastMessage", lastMessage);
+    // if (conversation.length > 0 && lastMessage.role === "user") {
+    //   fetchChatResponse();
+    // }
+    (
+      messagesRef.current as HTMLDivElement | null
+    )?.lastElementChild?.scrollIntoView();
   }, [conversation]);
 
-  const setNewUserMessage = () => {
-    const newUserMessage: Message = { role: "user", content: [{ text: inputValue }] };
-    setConversation(prevConversation => [...prevConversation, newUserMessage]);
-    (messagesRef.current as HTMLDivElement | null)?.lastElementChild?.scrollIntoView();
-    setInputValue('');
+  const setNewUserMessage = (): Message => {
+    const newUserMessage: Message = {
+      role: "user",
+      content: [{ text: inputValue }],
+    };
+    console.log("set", newUserMessage);
+    setConversation((prevConversation) => [
+      ...prevConversation,
+      newUserMessage,
+    ]);
+    // (
+    //   messagesRef.current as HTMLDivElement | null
+    // )?.lastElementChild?.scrollIntoView();
+    setInputValue("");
+    return newUserMessage;
   };
 
   return (
@@ -95,9 +113,8 @@ const Chat: React.FC = () => {
       {isLoading && (
         <div className="loader-container">
           <p>Thinking...</p>
-    
-          <Placeholder size="large" />
 
+          <Placeholder size="large" />
         </div>
       )}
       <div className="input-container">
@@ -114,11 +131,15 @@ const Chat: React.FC = () => {
             }
           }}
         />
-        <Button onClick={handleSendMessage} className="send-button" isDisabled={isLoading}>
-          {isLoading ? 'Sending...' : 'Send'}
+        <Button
+          onClick={handleSendMessage}
+          className="send-button"
+          isDisabled={isLoading}
+        >
+          {isLoading ? "Sending..." : "Send"}
         </Button>
       </div>
-      {error && <div className="error-message">{error}</div>}
+      {error ? <div className="error-message">{error}</div> : null}
     </div>
   );
 };

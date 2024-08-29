@@ -1,37 +1,20 @@
 "use client";
-import { Authenticator, Button, Icon } from "@aws-amplify/ui-react";
-import { Amplify } from "aws-amplify";
-import "@aws-amplify/ui-react/styles.css";
-import outputs from "../../amplify_outputs.json";
+import { Button } from "@aws-amplify/ui-react";
 import Chat from "@/components/Chat";
-
-Amplify.configure(outputs);
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 export default function Home() {
+  const { user, signOut } = useAuthenticator();
+
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <div className="app-container">
-          <header className="top-bar">
-            <div className="left-section">
-              <Button onClick={signOut} variation="link">
-              
-                Sign out
-              </Button>
-            </div>
-            <div className="center-section">
-              <h1>Trip Planner Assistant</h1>
-            </div>
-            <div className="right-section">
-              
-              <span>{user?.signInDetails?.loginId}</span>
-            </div>
-          </header>
-          <main>
-            <Chat />
-          </main>
-        </div>
-      )}
-    </Authenticator>
+    <div className="app-container">
+      <header className="App-header">
+        <h1>Hello {user?.signInDetails?.loginId}</h1>
+        <Button onClick={signOut}>Sign out</Button>
+      </header>
+      <main>
+        <Chat />
+      </main>
+    </div>
   );
 }

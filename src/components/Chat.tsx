@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { generateClient } from "aws-amplify/api";
 import { Schema } from "../../amplify/data/resource";
-import { Button, TextField, Loader, Placeholder } from "@aws-amplify/ui-react";
+import { Button, TextField, Loader, Placeholder, View, Flex } from "@aws-amplify/ui-react";
 
 // Types
 type Message = {
@@ -26,7 +26,7 @@ const SYSTEM_PROMPT = `
   platforms, all while maintaining a warm and approachable tone to enhance the excitement of trip planning.
 `;
 
-const Chat: React.FC = () => {
+export function Chat() {
   const [conversation, setConversation] = useState<Conversation>([]);
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
@@ -38,7 +38,10 @@ const Chat: React.FC = () => {
     setInputValue(e.target.value);
   };
 
-  const handleSendMessage = () => {
+
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (inputValue.trim()) {
       const message = setNewUserMessage();
       fetchChatResponse(message);
@@ -102,45 +105,52 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="chat-container">
-      <div className="messages" ref={messagesRef}>
+    <View className="chat-container">
+      <View className="messages" ref={messagesRef}>
         {conversation.map((msg, index) => (
-          <div key={index} className={`message ${msg.role}`}>
+          <View key={index} className={`message ${msg.role}`}>
             {msg.content[0].text}
-          </div>
+          </View>
         ))}
-      </div>
+      </View>
       {isLoading && (
-        <div className="loader-container">
+        <View className="loader-container">
           <p>Thinking...</p>
 
           <Placeholder size="large" />
-        </div>
+        </View>
       )}
-      <div className="input-container">
+     
+     <form onSubmit={handleSubmit} className="input-container">
+ 
+     
         <input
-          type="text"
           name="prompt"
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Type your message..."
           className="input"
+          type="text"
           onKeyUp={(e) => {
             if (e.key === "Enter") {
-              handleSendMessage();
+              e.preventDefault();
             }
           }}
         />
         <Button
-          onClick={handleSendMessage}
+          type="submit"
           className="send-button"
           isDisabled={isLoading}
+          loadingText="Sending..."
         >
-          {isLoading ? "Sending..." : "Send"}
+          Send
         </Button>
-      </div>
-      {error ? <div className="error-message">{error}</div> : null}
-    </div>
+    
+      
+    </form>
+   
+      {error ? <View className="error-message">{error}</View> : null}
+    </View>
   );
 };
 

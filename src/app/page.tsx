@@ -1,8 +1,6 @@
 "use client";
 import {
-  Authenticator,
   Button,
-  Icon,
   View,
   Heading,
   Flex,

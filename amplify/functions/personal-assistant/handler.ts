@@ -1,9 +1,10 @@
-import type { Schema } from "./resource";
+
 import {
   BedrockRuntimeClient,
   ConverseCommandInput,
   ConverseCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import type { Handler } from 'aws-lambda';
 
 // Constants
 const AWS_REGION = process.env.AWS_REGION;
@@ -18,7 +19,7 @@ const INFERENCE_CONFIG = {
 // Initialize Bedrock Runtime Client
 const client = new BedrockRuntimeClient({ region: AWS_REGION });
 
-export const handler: Schema["chat"]["functionHandler"] = async (
+export const handler: Handler = async (
     event
   ) => {
 

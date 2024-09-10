@@ -2,7 +2,7 @@
 
 This is an example shows how to build a travel assistant app. The app will provide a personalized experience by suggesting popular attractions, local experiences, and hidden gems for the user's desired destination. We will build this app using the new Amplify AI category and Amazon Bedrock.
 
-![travel-planner-ai](images/travel-planner-ai.gif)
+![travel-planner-ai](images/travel-planner.gif)
 
 ## Getting Started
 ### Clone repo

@@ -2,6 +2,7 @@ import { AuthWrapper } from "@/components/AuthWrapper";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "@aws-amplify/ui-react/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

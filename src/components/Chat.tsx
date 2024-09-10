@@ -14,7 +14,7 @@ export function Chat() {
 
   return (
     <View className="chat-container">
-      <AIConversation messages={messages} handleSendMessage={sendMessage} />
+      <AIConversation variant="bubble" messages={messages} handleSendMessage={sendMessage} />
     </View>
   );
 }

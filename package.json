@@ -9,28 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-amplify/ui-react-ai": "ai-release",
-    "@aws-amplify/ui-react": "ai-release",
+    "@aws-amplify/ui-react-ai": "^0.1.0",
     "@aws-sdk/client-bedrock-agent-runtime": "^3.642.0",
-    "@aws-sdk/client-bedrock-runtime": "^3.642.0",
-    "aws-amplify": "^6.5.0",
+    "aws-amplify": "^6.6.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
   },
-  "overrides": {
-    "@aws-amplify/appsync-modelgen-plugin": "raven",
-    "@aws-amplify/data-schema": "ai",
-    "@aws-amplify/graphql-api-construct": "raven",
-    "@aws-amplify/graphql-conversation-transformer": "raven",
-    "@aws-amplify/graphql-generation-transformer": "raven"
-  },
   "devDependencies": {
-    "@aws-amplify/graphql-conversation-transformer": "raven",
-    "@aws-amplify/graphql-generation-transformer": "raven",
-
-    "@aws-amplify/backend": "^1.2.0",
-    "@aws-amplify/backend-cli": "^1.2.0",
+    "@aws-amplify/backend": "^1.2.1",
+    "@aws-amplify/backend-cli": "^1.2.5",
+    "@aws-sdk/client-bedrock-runtime": "^3.645.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

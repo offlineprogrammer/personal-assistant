@@ -5,7 +5,7 @@ const SYSTEM_PROMPT =
 
 const schema = a.schema({
   chat: a.conversation({
-    aiModel: a.aiModel.anthropic.claude3Sonnet(),
+    aiModel: a.ai.model('Claude 3 Haiku'),
     systemPrompt: SYSTEM_PROMPT,
   }),
 });
